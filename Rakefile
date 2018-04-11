@@ -9,8 +9,8 @@ require 'rake/extensiontask'
 
 task build: :compile
 
-Rake::ExtensionTask.new('tamashii_bluetooth') do |ext|
-  ext.lib_dir = 'lib/tamashii_bluetooth'
+Rake::ExtensionTask.new('tamashii/bluetooth') do |ext|
+  ext.lib_dir = 'lib/tamashii/bluetooth'
 end
 
 task default: %i[clobber compile spec]

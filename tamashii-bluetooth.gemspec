@@ -3,11 +3,11 @@
 
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'tamashii_bluetooth/version'
+require 'tamashii/bluetooth/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'tamashii-bluetooth'
-  spec.version       = TamashiiBluetooth::VERSION
+  spec.version       = Tamashii::Bluetooth::VERSION
   spec.authors       = ['蒼時弦也']
   spec.email         = ['elct9620@frost.tw']
 
@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
   spec.bindir        = 'exe'
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
-  spec.extensions    = ['ext/tamashii_bluetooth/extconf.rb']
+  spec.extensions    = ['ext/tamashii/bluetooth/extconf.rb']
 
   spec.add_development_dependency 'bundler', '~> 1.16'
   spec.add_development_dependency 'overcommit', '~> 0.44.0'
