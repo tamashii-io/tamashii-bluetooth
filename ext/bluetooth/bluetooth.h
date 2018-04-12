@@ -33,6 +33,7 @@ Init_bluetooth(void)
   rb_mTamashiiBluetooth = rb_define_module_under(rb_mTamashii, "Bluetooth");
 
   rb_cTamashiiBluetoothEvent = rb_define_class_under(rb_mTamashiiBluetooth, "Event", rb_cObject);
+  rb_define_attr(rb_cTamashiiBluetoothEvent, "device", 1, 0);
   // TODO: Remove unused method
   rb_define_method(rb_cTamashiiBluetoothEvent, "process", rb_tamashii_bt_event_process, 0);
 

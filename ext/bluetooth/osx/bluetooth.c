@@ -119,7 +119,9 @@ static VALUE rb_tamashii_bt_device_initialize(VALUE self)
 
   xpc_connection_set_event_handler(bt->connection, ^(xpc_object_t event) {
       xpc_retain(event);
-      rb_funcall(queue, rb_intern("push"), 1, rb_create_xpc_event(event));
+      VALUE tamashii_event = rb_create_xpc_event(event);
+      rb_ivar_set(tamashii_event, rb_intern("@device"), self);
+      rb_funcall(queue, rb_intern("push"), 1, tamashii_event);
   });
 
   xpc_connection_resume(bt->connection);
