@@ -116,6 +116,7 @@ static VALUE rb_tamashii_bt_device_initialize(VALUE self)
   VALUE rb_cQueue = rb_const_get(rb_cObject, rb_intern("Queue"));
   VALUE queue = rb_class_new_instance(0, NULL, rb_cQueue);
   rb_ivar_set(self, rb_intern("@events"), queue);
+  rb_ivar_set(self, rb_intern("@state"), INT2FIX(0));
 
   xpc_connection_set_event_handler(bt->connection, ^(xpc_object_t event) {
       xpc_retain(event);
@@ -177,6 +178,15 @@ static VALUE rb_tamashii_bt_event_process(VALUE self)
 
     rb_raise(rb_eException, "%s", message);
   } else if (event_type == XPC_TYPE_DICTIONARY) {
+
+    // Update State
+    if (xpc_dictionary_get_int64(rb_xpc_event->event, "kCBMsgId") == 6) {
+      xpc_object_t args = xpc_dictionary_get_value(rb_xpc_event->event, "kCBMsgArgs");
+      int state = xpc_dictionary_get_int64(args, "kCBMsgArgState");
+      VALUE device = rb_ivar_get(self, rb_intern("@device"));
+      rb_ivar_set(device, rb_intern("@state"), INT2FIX(state));
+    }
+
     return rb_xpc_dictionary_to_hash(rb_xpc_event->event);
   }
   return Qfalse;

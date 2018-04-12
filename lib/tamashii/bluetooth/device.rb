@@ -2,6 +2,7 @@
 
 module Tamashii
   module Bluetooth
+    # Device
     class Device
       STATE = %i[
         unknown
@@ -11,6 +12,10 @@ module Tamashii
         powered_off
         powered_on
       ].freeze
+
+      def state
+        STATE[@state]
+      end
     end
   end
 end
