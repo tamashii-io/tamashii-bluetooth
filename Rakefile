@@ -9,7 +9,7 @@ require 'rake/extensiontask'
 
 task build: :compile
 
-Rake::ExtensionTask.new('tamashii/bluetooth') do |ext|
+Rake::ExtensionTask.new('bluetooth') do |ext|
   ext.lib_dir = 'lib/tamashii/bluetooth'
 end
 

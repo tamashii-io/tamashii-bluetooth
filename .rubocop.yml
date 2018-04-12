@@ -1,2 +1,6 @@
 AllCops:
   TargetRubyVersion: 2.4
+
+Style/GlobalVars:
+  Exclude:
+    - '**/extconf.rb'
