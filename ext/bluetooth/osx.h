@@ -29,6 +29,8 @@ xpc_object_t rb_hash_to_xpc_object(VALUE);
 xpc_object_t rb_object_to_xpc_value(VALUE);
 xpc_object_t rb_create_xpc_data(VALUE);
 
+xpc_object_t tamashii_create_message_from_advertisment(VALUE);
+
 void rb_tamashii_bt_event_free(void *);
 VALUE rb_tamashii_bt_event_create(xpc_object_t, VALUE);
 

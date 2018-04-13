@@ -1,6 +1,20 @@
 #include "../bluetooth.h"
 #include "../init.h"
 
+xpc_object_t tamashii_create_message_from_advertisment(VALUE object) {
+  xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
+  xpc_object_t args = xpc_dictionary_create(NULL, NULL, 0);
+
+  VALUE data = rb_ivar_get(object, rb_intern("@data"));
+
+  xpc_dictionary_set_value(args, "kCBAdvDataAppleMfgData", rb_create_xpc_data(data));
+
+  xpc_dictionary_set_value(message, "kCBMsgId", xpc_int64_create(BLUED_MSG_ADVERTISING));
+  xpc_dictionary_set_value(message, "kCBMsgArgs", args);
+
+  return message;
+}
+
 void rb_tamashii_bt_device_deallocate(void *bt) {
   free(bt);
 }
@@ -12,14 +26,45 @@ VALUE rb_tamashii_bt_device_allocate(VALUE klass)
   return Data_Wrap_Struct(klass, NULL, rb_tamashii_bt_device_deallocate, bt);
 }
 
-VALUE rb_tamashii_bt_device_send(VALUE self, VALUE hash)
+VALUE rb_tamashii_bt_device_open(VALUE self)
 {
   tamatshii_bt_device_t *bt;
   Data_Get_Struct(self, tamatshii_bt_device_t, bt);
-  xpc_object_t message = rb_hash_to_xpc_object(hash);
-  xpc_connection_send_message(bt->connection, message);
 
-  return Qtrue;
+  xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
+  xpc_object_t args = xpc_dictionary_create(NULL, NULL, 0);
+  xpc_object_t options = xpc_dictionary_create(NULL, NULL, 0);
+
+  char* name;
+  name = malloc(13 + sizeof(time_t) * 2);
+  sprintf(name, "tamashii-ble-%ld", time(NULL));
+
+  xpc_dictionary_set_value(options, "kCBInitOptionShowPowerAlert", xpc_int64_create(1));
+
+  xpc_dictionary_set_value(args, "kCBMsgArgName", xpc_string_create(name));
+  xpc_dictionary_set_value(args, "kCBMsgArgType", xpc_int64_create(1));
+  xpc_dictionary_set_value(args, "kCBMsgArgOptions", options);
+
+  xpc_dictionary_set_value(message, "kCBMsgId", xpc_int64_create(BLUED_MSG_INIT));
+  xpc_dictionary_set_value(message, "kCBMsgArgs", args);
+
+  xpc_connection_send_message(bt->connection, message);
+  return Qnil;
+}
+
+VALUE rb_tamashii_bt_device_advertising(VALUE self, VALUE object)
+{
+  tamatshii_bt_device_t *bt;
+  Data_Get_Struct(self, tamatshii_bt_device_t, bt);
+
+  xpc_object_t message;
+
+  if (rb_obj_is_kind_of(object, rb_cTamashiiBluetoothAdvertisment)) {
+    message = tamashii_create_message_from_advertisment(object);
+  }
+
+  xpc_connection_send_message(bt->connection, message);
+  return Qnil;
 }
 
 VALUE rb_tamashii_bt_device_initialize(VALUE self)

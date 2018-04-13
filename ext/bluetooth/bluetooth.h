@@ -2,6 +2,7 @@
 #define TAMASHII_BLUETOOTH_H
 
 #include <stdlib.h>
+#include <time.h>
 
 #include "ruby.h"
 #include "ruby/intern.h"
@@ -21,12 +22,15 @@ extern VALUE rb_mTamashiiBluetooth;
 extern VALUE rb_cTamashiiBluetoothDevice;
 extern VALUE rb_cTamashiiBluetoothEvent;
 
+extern VALUE rb_cTamashiiBluetoothAdvertisment;
+
 // Device Methods
 VALUE rb_tamashii_bt_device_allocate(VALUE);
 void rb_tamashii_bt_device_deallocate(void*);
 
 VALUE rb_tamashii_bt_device_initialize(VALUE);
-VALUE rb_tamashii_bt_device_send(VALUE, VALUE);
+VALUE rb_tamashii_bt_device_open(VALUE);
+VALUE rb_tamashii_bt_device_advertising(VALUE, VALUE);
 
 // Event Methods
 
