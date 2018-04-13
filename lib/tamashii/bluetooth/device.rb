@@ -16,6 +16,14 @@ module Tamashii
       def state
         STATE[@state]
       end
+
+      def on?
+        state == :powered_on
+      end
+
+      def off?
+        state == :powered_off
+      end
     end
   end
 end
