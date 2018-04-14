@@ -26,6 +26,7 @@ extern void Init_bluetooth(void)
   rb_define_method(rb_cTamashiiBluetoothDevice, "initialize", rb_tamashii_bt_device_initialize, 0);
   rb_define_method(rb_cTamashiiBluetoothDevice, "open", rb_tamashii_bt_device_open, 0);
   rb_define_method(rb_cTamashiiBluetoothDevice, "advertising", rb_tamashii_bt_device_advertising, 1);
+  rb_define_method(rb_cTamashiiBluetoothDevice, "stop", rb_tamashii_bt_device_stop, 0);
 
   rb_cTamashiiBluetoothAdvertisment = rb_define_class_under(rb_mTamashiiBluetooth, "Advertisment", rb_cObject);
   rb_define_attr(rb_cTamashiiBluetoothAdvertisment, "data", 1, 1);

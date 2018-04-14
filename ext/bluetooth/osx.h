@@ -9,8 +9,14 @@
 
 #ifdef OSX_YOSEMITE
 #define BLUED_MSG_ADVERTISING 8
+#define BLUED_MSG_STOP 9
+#define BLUED_START_ADVERTISING 16
+#define BLUED_STOP_ADVERTISING 17
 #else
 #define BLUED_MSG_ADVERTISING 16
+#define BLUED_MSG_STOP 17
+#define BLUED_START_ADVERTISING 27
+#define BLUED_STOP_ADVERTISING 28
 #endif
 
 static const char* service_name = "com.apple.blued";

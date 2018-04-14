@@ -17,6 +17,17 @@ VALUE resolve_tamashii_bt_event(VALUE self, tamashii_bt_event_t *event) {
         type = "state_changed";
         break;
       }
+    case BLUED_START_ADVERTISING:
+      {
+        // TODO: Handle Error
+        type = "start";
+        break;
+      }
+    case BLUED_STOP_ADVERTISING:
+      {
+        type = "stop";
+        break;
+      }
     default:
       // TODO: Add all supported event
       type = "unknown";

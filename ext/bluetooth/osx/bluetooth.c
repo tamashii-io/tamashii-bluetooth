@@ -6,7 +6,9 @@ xpc_object_t tamashii_create_message(int message_id, xpc_object_t args)
   xpc_object_t message = xpc_dictionary_create(NULL, NULL, 0);
 
   xpc_dictionary_set_value(message, "kCBMsgId", xpc_int64_create(message_id));
-  xpc_dictionary_set_value(message, "kCBMsgArgs", args);
+  if (args) {
+    xpc_dictionary_set_value(message, "kCBMsgArgs", args);
+  }
 
   return message;
 }
@@ -64,9 +66,20 @@ VALUE rb_tamashii_bt_device_advertising(VALUE self, VALUE object)
 
   if (rb_obj_is_kind_of(object, rb_cTamashiiBluetoothAdvertisment)) {
     message = tamashii_create_message_from_advertisment(object);
+  } else {
+    rb_raise(rb_eArgError, "The object should be a kind of Tamashii::Bluetooth::Advertisment");
   }
 
   xpc_connection_send_message(bt->connection, message);
+  return Qnil;
+}
+
+VALUE rb_tamashii_bt_device_stop(VALUE self)
+{
+  tamatshii_bt_device_t *bt;
+  Data_Get_Struct(self, tamatshii_bt_device_t, bt);
+
+  xpc_connection_send_message(bt->connection, tamashii_create_message(BLUED_MSG_STOP, NULL));
   return Qnil;
 }
 

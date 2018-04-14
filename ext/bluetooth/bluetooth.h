@@ -31,6 +31,7 @@ void rb_tamashii_bt_device_deallocate(void*);
 VALUE rb_tamashii_bt_device_initialize(VALUE);
 VALUE rb_tamashii_bt_device_open(VALUE);
 VALUE rb_tamashii_bt_device_advertising(VALUE, VALUE);
+VALUE rb_tamashii_bt_device_stop(VALUE);
 
 // Event Methods
 
