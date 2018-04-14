@@ -18,6 +18,8 @@ VALUE resolve_tamashii_bt_event(VALUE self, tamashii_bt_event_t *event) {
         break;
       }
     default:
+      // TODO: Add all supported event
+      type = "unknown";
       return Qnil;
   }
 
