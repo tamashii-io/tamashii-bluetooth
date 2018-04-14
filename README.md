@@ -1,15 +1,13 @@
-# TamashiiBluetooth
+# Tamashii Bluetooth
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/tamashii_bluetooth`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The Bluetooth implement for Tamashii to building IoT device with BLE (Bluetooth Low Engery) function.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'tamashii_bluetooth'
+gem 'tamashii-bluetooth'
 ```
 
 And then execute:
@@ -18,11 +16,98 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install tamashii_bluetooth
+    $ gem install tamashii-bluetooth
 
 ## Usage
 
-TODO: Write usage instructions here
+Current only support running on macOS by using iBeacon format.
+
+### Initialize Bluetooth device
+
+```ruby
+require 'tamashii/bluetooth'
+
+device = Tamashii::Bluetooth::Device.new
+device.open
+
+# Do something ...
+
+# This is async in macOS
+device.stop
+```
+
+### Handling Event
+
+```ruby
+require 'tamashii/bluetooth'
+
+device = Tamashii::Bluetooth::Device.new
+device.open
+
+# Ensure your ruby is running otherwise the Bluetooth device will be closed
+Thread.new do
+  until device.events.empty?
+    event = device.events.pop
+
+    if event.type == :state_changed && device.powered_on?
+      # Advertising
+    end
+  end
+
+  # Free CPU
+  sleep 1
+end.join
+```
+
+### Advertising (LINE Beacon)
+
+```ruby
+require 'tamashii/bluetooth'
+require 'tamashii/bluetooth/beacon'
+
+device = Tamashii::Bluetooth::Device.new
+device.open
+
+# beacon = Tamashii::Bluetooth::Advertisment.new
+# beacon.data = [0x02, ...]
+beacon = Tamashii::Bluetooth::Beacon::LINE.new('001facddd')
+
+# Ensure your ruby is running otherwise the Bluetooth device will be closed
+Thread.new do
+  until device.events.empty?
+    event = device.events.pop
+
+    if event.type == :state_changed && device.powered_on?
+      device.advertising(beacon)
+    end
+  end
+
+  # Free CPU
+  sleep 1
+end.join
+```
+
+## Roadmap
+
+### MVP (~> 0.1)
+
+* [x] macOS support (XPC / CoreBluetooth)
+* [ ] Linux support (libbluetooth)
+* [ ] Advertising
+  * [x] iBeacon
+    * [ ] iBeacon Class
+    * [x] LINE Beacon Class
+  * [ ] EddyStone
+* [ ] Tests
+* [ ] Events
+  * [x] State Changes
+  * [x] Start
+  * [x] Stop
+* [ ] Error Handling
+
+### Full ( >= 1.0 )
+
+We plan to add full Bluetooth support with breaking changes with MVP version.
 
 ## Development
 
@@ -32,4 +117,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/tamashii_bluetooth.
+Bug reports and pull requests are welcome on GitHub at https://github.com/tamashii-io/tamashii-bluetooth.
