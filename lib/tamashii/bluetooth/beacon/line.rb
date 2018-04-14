@@ -4,7 +4,7 @@ module Tamashii
   module Bluetooth
     module Beacon
       # Line Beacon Format
-      class Line < Advertisment
+      class LINE < Advertisment
         ADTYPE_FLAGS = 0x01
         ADTYPE_COMPLETE_16_BIT_SERVICE_UUID = 0x03
         ADTYPE_SERVICE_DATA = 0x16
