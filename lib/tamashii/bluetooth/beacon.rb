@@ -5,6 +5,7 @@ module Tamashii
     # Beacon Support
     module Beacon
       autoload :LINE, 'tamashii/bluetooth/beacon/line'
+      autoload :IBeacon, 'tamashii/bluetooth/beacon/ibeacon'
     end
   end
 end
