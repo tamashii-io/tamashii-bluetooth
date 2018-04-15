@@ -95,7 +95,7 @@ end.join
 * [ ] Linux support (libbluetooth)
 * [ ] Advertising
   * [x] iBeacon
-    * [ ] iBeacon Class
+    * [x] iBeacon Class
     * [x] LINE Beacon Class
   * [ ] EddyStone
 * [ ] Tests
